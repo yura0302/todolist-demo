@@ -25,24 +25,25 @@ function plusTask() {
   console.log(TaskList);
   render();
 }
-
 function render() {
   let resultHTML = "";
   for (let i = 1; i < TaskList.length; i++) {
     if (TaskList[i].isComplete == true) {
+      // 바꼈을때
       resultHTML += `<div class="task">
-      <div class="task-done">${TaskList[i].TaskContent}</div>
-      <div>
-        <button onclick="toggleComplete('${TaskList[i].id}')">Check</button>
-        <button onclick="deleteTask('${TaskList[i].id}')">Delete</button>
+            <div class="task-done">${TaskList[i].TaskContent}</div>
+            <div class="task-buttons">
+        <button class="first-button" onclick="toggleComplete('${TaskList[i].id}')"><i class="fa-solid fa-reply"></i></button>
+        <button class="second-button" onclick="deleteTask('${TaskList[i].id}')"><i class="fa-solid fa-trash"></i></button>
       </div>
     </div>`;
     } else {
+      // 안바꼈을때
       resultHTML += `<div class="task">
-            <div>${TaskList[i].TaskContent}</div>
-            <div>
-              <button onclick="toggleComplete('${TaskList[i].id}')">Check</button>
-              <button onclick="deleteTask('${TaskList[i].id}')">Delete</button>
+            <div class="task-no-done">${TaskList[i].TaskContent}</div>
+            <div class="task-buttons">
+              <button class="no-first-button" onclick="toggleComplete('${TaskList[i].id}')"><i class="fa-sharp fa-solid fa-circle-check"></i></button>
+              <button class="no-second-button" onclick="deleteTask('${TaskList[i].id}')"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>`;
     }
@@ -74,5 +75,3 @@ function deleteTask(id) {
 function randomIDGenerate() {
   return "_" + Math.random().toString(36).substr(2, 9);
 }
-
-plusTask();
