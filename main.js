@@ -28,7 +28,7 @@ function plusTask() {
 
 function render() {
   let resultHTML = "";
-  for (let i = 0; i < TaskList.length; i++) {
+  for (let i = 1; i < TaskList.length; i++) {
     if (TaskList[i].isComplete == true) {
       resultHTML += `<div class="task">
       <div class="task-done">${TaskList[i].TaskContent}</div>
@@ -62,7 +62,14 @@ function toggleComplete(id) {
 }
 
 function deleteTask() {
-  console.log("삭제하자 !");
+  let task = {
+    id: randomIDGenerate(),
+    TaskContent: TaskInput.value,
+    isComplete: false,
+  };
+  TaskList.pop(task);
+  console.log(TaskList);
+  render();
 }
 
 function randomIDGenerate() {
