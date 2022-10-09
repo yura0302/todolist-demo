@@ -34,7 +34,7 @@ function render() {
       <div class="task-done">${TaskList[i].TaskContent}</div>
       <div>
         <button onclick="toggleComplete('${TaskList[i].id}')">Check</button>
-        <button onclick="deleteTask()">Delete</button>
+        <button onclick="deleteTask('${TaskList[i].id}')">Delete</button>
       </div>
     </div>`;
     } else {
@@ -42,7 +42,7 @@ function render() {
             <div>${TaskList[i].TaskContent}</div>
             <div>
               <button onclick="toggleComplete('${TaskList[i].id}')">Check</button>
-              <button onclick="deleteTask()">Delete</button>
+              <button onclick="deleteTask('${TaskList[i].id}')">Delete</button>
             </div>
           </div>`;
     }
@@ -61,14 +61,13 @@ function toggleComplete(id) {
   console.log(TaskList);
 }
 
-function deleteTask() {
-  let task = {
-    id: randomIDGenerate(),
-    TaskContent: TaskInput.value,
-    isComplete: false,
-  };
-  TaskList.pop(task);
-  console.log(TaskList);
+function deleteTask(id) {
+  for (let i = 0; i < TaskList.length; i++) {
+    if (TaskList[i].id == id) {
+      TaskList.splice(i, 1);
+      break;
+    }
+  }
   render();
 }
 
