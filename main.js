@@ -16,6 +16,13 @@ let filterList = [];
 const TaskInput = document.getElementById("task-input");
 const PlusButton = document.getElementById("plus-button");
 
+TaskInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    document.getElementById("plus-button").click();
+  }
+});
+
 PlusButton.addEventListener("click", plusTask);
 
 for (let i = 1; i < taps.length; i++) {
