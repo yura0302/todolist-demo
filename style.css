@@ -90,3 +90,7 @@ body {
   font-size: 1em;
   color: tomato;
 }
+
+.task-taps div {
+  cursor: pointer;
+}

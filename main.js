@@ -9,11 +9,20 @@
 // 끝남탭은 끝난 아이템만, 진행중 탭은 진행중인 아이템만 보여준다.
 // 전체탭을 누르면 다시 전체 아이템으로 돌아옴
 
+let taps = document.querySelectorAll(".task-taps div");
 let TaskList = [];
+let mode = "all";
+let filterList = [];
 const TaskInput = document.getElementById("task-input");
 const PlusButton = document.getElementById("plus-button");
 
 PlusButton.addEventListener("click", plusTask);
+
+for (let i = 1; i < taps.length; i++) {
+  taps[i].addEventListener("click", function (event) {
+    filter(event);
+  });
+}
 
 function plusTask() {
   let task = {
@@ -26,24 +35,30 @@ function plusTask() {
   render();
 }
 function render() {
+  let list = [];
+  if (mode == "all") {
+    list = TaskList;
+  } else if (mode == "ongoing" || mode == "done") {
+    list = filterList;
+  }
   let resultHTML = "";
-  for (let i = 1; i < TaskList.length; i++) {
-    if (TaskList[i].isComplete == true) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].isComplete == true) {
       // 바꼈을때
       resultHTML += `<div class="task">
-            <div class="task-done">${TaskList[i].TaskContent}</div>
+            <div class="task-done">${list[i].TaskContent}</div>
             <div class="task-buttons">
-        <button class="first-button" onclick="toggleComplete('${TaskList[i].id}')"><i class="fa-solid fa-reply"></i></button>
-        <button class="second-button" onclick="deleteTask('${TaskList[i].id}')"><i class="fa-solid fa-trash"></i></button>
+        <button class="first-button" onclick="toggleComplete('${list[i].id}')"><i class="fa-solid fa-reply"></i></button>
+        <button class="second-button" onclick="deleteTask('${list[i].id}')"><i class="fa-solid fa-trash"></i></button>
       </div>
     </div>`;
     } else {
       // 안바꼈을때
       resultHTML += `<div class="task">
-            <div class="task-no-done">${TaskList[i].TaskContent}</div>
+            <div class="task-no-done">${list[i].TaskContent}</div>
             <div class="task-buttons">
-              <button class="no-first-button" onclick="toggleComplete('${TaskList[i].id}')"><i class="fa-sharp fa-solid fa-circle-check"></i></button>
-              <button class="no-second-button" onclick="deleteTask('${TaskList[i].id}')"><i class="fa-solid fa-trash"></i></button>
+              <button class="no-first-button" onclick="toggleComplete('${list[i].id}')"><i class="fa-sharp fa-solid fa-circle-check"></i></button>
+              <button class="no-second-button" onclick="deleteTask('${list[i].id}')"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>`;
     }
@@ -67,6 +82,36 @@ function deleteTask(id) {
     if (TaskList[i].id == id) {
       TaskList.splice(i, 1);
       break;
+    }
+  }
+  render();
+}
+
+function filter(event) {
+  mode = event.target.id;
+  filterList = [];
+  document.getElementById("under-line").style.width =
+    event.target.offsetWidth + "px";
+  document.getElementById("under-line").style.top =
+    event.target.offsetTop + event.target.offsetHeight + "px";
+  document.getElementById("under-line").style.left =
+    event.target.offsetLeft + "px";
+  // 상황별 필터링
+  if (mode == "all") {
+    render();
+  } else if (mode == "ongoing") {
+    for (let i = 0; i < TaskList.length; i++) {
+      if (TaskList[i].isComplete == false) {
+        filterList.push(TaskList[i]);
+      }
+    }
+
+    render();
+  } else if (mode == "done") {
+    for (let i = 0; i < TaskList.length; i++) {
+      if (TaskList[i].isComplete == true) {
+        filterList.push(TaskList[i]);
+      }
     }
   }
   render();
