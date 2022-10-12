@@ -32,15 +32,17 @@ for (let i = 1; i < taps.length; i++) {
 }
 
 function plusTask() {
+  let TaskValue = TaskInput.value;
   let task = {
     id: randomIDGenerate(),
     TaskContent: TaskInput.value,
     isComplete: false,
   };
   TaskList.push(task);
-  console.log(TaskList);
+  TaskInput.value = "";
   render();
 }
+
 function render() {
   let list = [];
   if (mode == "all") {
