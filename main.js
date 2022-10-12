@@ -13,6 +13,7 @@ let taps = document.querySelectorAll(".task-taps div");
 let TaskList = [];
 let mode = "all";
 let filterList = [];
+let underLine = document.getElementById("under-line");
 const TaskInput = document.getElementById("task-input");
 const PlusButton = document.getElementById("plus-button");
 
@@ -82,8 +83,7 @@ function toggleComplete(id) {
       break;
     }
   }
-  render();
-  console.log(TaskList);
+  filter();
 }
 
 function deleteTask(id) {
@@ -93,29 +93,27 @@ function deleteTask(id) {
       break;
     }
   }
-  render();
+  filter();
 }
 
-function filter(event) {
-  mode = event.target.id;
-  filterList = [];
-  document.getElementById("under-line").style.width =
-    event.target.offsetWidth + "px";
-  document.getElementById("under-line").style.top =
-    event.target.offsetTop + event.target.offsetHeight + "px";
-  document.getElementById("under-line").style.left =
-    event.target.offsetLeft + "px";
+function filter(e) {
+  if (e) {
+    mode = e.target.id;
+    underLine.style.width = e.target.offsetWidth + "px";
+    underLine.style.left = e.target.offsetLeft + "px";
+    underLine.style.top =
+      e.target.offsetTop + (e.target.offsetHeight - 4) + "px";
+  }
   // 상황별 필터링
-  if (mode == "all") {
-    render();
-  } else if (mode == "ongoing") {
+  filterList = [];
+  // if (mode == "all") {
+  //   render();
+  if (mode == "ongoing") {
     for (let i = 0; i < TaskList.length; i++) {
       if (TaskList[i].isComplete == false) {
         filterList.push(TaskList[i]);
       }
     }
-
-    render();
   } else if (mode == "done") {
     for (let i = 0; i < TaskList.length; i++) {
       if (TaskList[i].isComplete == true) {
